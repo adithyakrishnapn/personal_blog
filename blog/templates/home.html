@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - Personal Blog</title>
+    <!-- Google Fonts for premium feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="container header-content">
+                <a href="{% url 'home' %}" class="logo">
+                    <span class="logo-text">MySpace</span>
+                </a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main-content container">
+            {% if messages %}
+            <div class="messages-container">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <section class="hero-section">
+                <h2 class="hero-title">Welcome to My Personal Blog</h2>
+                <p class="hero-subtitle">Sharing thoughts, ideas, and stories.</p>
+            </section>
+
+            {% if data %}
+            <div class="blog-grid">
+                {% for blog in data %}
+                <article class="blog-card">
+                    <div class="card-content">
+                        <h3 class="card-title">{{ blog.title }}</h3>
+                        <small class="card-date">{{ blog.created_at }}</small>
+                        <div class="card-footer">
+                            <a href="{% url 'view_blog' blog.id %}" class="btn-link">Read More &rarr;</a>
+                        </div>
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">📝</div>
+                <p>No blog posts available yet.</p>
+                <a href="{% url 'add_blog' %}" class="btn-primary">Create First Post</a>
+            </div>
+            {% endif %}
+        </main>
+
+        <footer class="main-footer">
+            <div class="container">
+                <p>&copy; {% now "Y" %} Personal Blog. Crafted by Adithya.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>

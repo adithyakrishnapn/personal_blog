@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>view_blog</title>
+    <!-- Google Fonts for premium feel -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="main-header">
+            <div class="container header-content">
+                <a href="{% url 'home' %}" class="logo">
+                    <span class="logo-text">MySpace</span>
+                </a>
+                <nav class="main-nav">
+                    <ul>
+                        <li><a href="{% url 'home' %}" class="nav-link">Home</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <main class="main-content container">
+            {% if blog %}
+            <article class="blog-detail-container">
+                <header class="blog-header">
+                    <h1 class="blog-title">{{ blog.title }}</h1>
+                    <div class="blog-meta">
+                        <span class="meta-date">Posted on {{ blog.created_at }}</span>
+                    </div>
+                </header>
+
+                <div class="blog-content">
+                    {{ blog.content|linebreaks }}
+                </div>
+
+                <footer class="blog-footer-nav">
+                    <a href="{% url 'home' %}" class="btn-secondary">&larr; Back to Home</a>
+                </footer>
+            </article>
+            {% else %}
+            <div class="error-state">
+                <h2>404</h2>
+                <p>Blog post not found.</p>
+                <a href="{% url 'home' %}" class="btn-primary">Go Home</a>
+            </div>
+            {% endif %}
+        </main>
+
+        <footer class="main-footer">
+            <div class="container">
+                <p>&copy; {% now "Y" %} Personal Blog. Crafted by Adithya.</p>
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
