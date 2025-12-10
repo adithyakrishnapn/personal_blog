@@ -4,15 +4,15 @@ set -euo pipefail
 
 # Configurable options (override with env vars if needed)
 RUN_MIGRATIONS="${RUN_MIGRATIONS:-false}"  # set to "true" to run migrations on deploy
-DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE:-project.settings}"
+DJANGO_SETTINGS_MODULE="${DJANGO_SETTINGS_MODULE:-personalBlog.settings}"  # replace with your actual settings module
 STATIC_ROOT="${STATIC_ROOT:-/app/static}"
 
 echo "Starting deployment script..."
 
-# 0) Ensure correct Django settings module
+# 0) Export Django settings module
 export DJANGO_SETTINGS_MODULE="$DJANGO_SETTINGS_MODULE"
 
-# 1) Upgrade pip and setuptools to include distutils
+# 1) Upgrade pip and setuptools (fixes distutils missing issue on Python 3.13)
 echo "Upgrading pip and setuptools..."
 pip install --upgrade pip setuptools
 
@@ -20,7 +20,7 @@ pip install --upgrade pip setuptools
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
 
-# 3) Collect static files (pre-deploy)
+# 3) Collect static files
 echo "Collecting static files (collectstatic) ..."
 python manage.py collectstatic --noinput
 
