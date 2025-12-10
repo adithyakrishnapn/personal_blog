@@ -9,19 +9,24 @@ STATIC_ROOT="${STATIC_ROOT:-/app/static}"
 
 echo "Starting deployment script..."
 
-# 1) Install dependencies
+# 0) Ensure correct Django settings module
+export DJANGO_SETTINGS_MODULE="$DJANGO_SETTINGS_MODULE"
+
+# 1) Upgrade pip and setuptools to include distutils
+echo "Upgrading pip and setuptools..."
+pip install --upgrade pip setuptools
+
+# 2) Install dependencies
 echo "Installing Python dependencies..."
 pip install -r requirements.txt
 
-# 2) Collect static files (pre-deploy)
+# 3) Collect static files (pre-deploy)
 echo "Collecting static files (collectstatic) ..."
 python manage.py collectstatic --noinput
 
-# 3) Optional: Apply database migrations
+# 4) Optional: Apply database migrations
 if [ "$RUN_MIGRATIONS" = "true" ]; then
   echo "Applying database migrations..."
-  # Ensure the correct settings module is used
-  export DJANGO_SETTINGS_MODULE="$DJANGO_SETTINGS_MODULE"
   python manage.py migrate --noinput
 else
   echo "Skipping migrations (RUN_MIGRATIONS=$RUN_MIGRATIONS)."
