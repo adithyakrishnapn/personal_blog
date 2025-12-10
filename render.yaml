@@ -1,0 +1,14 @@
+# render.yaml
+
+services:
+  - type: web
+    name: personal-blog
+    env: python
+    python_version: 3.11.10            # Python version compatible with Django 3.1
+    buildCommand: bash deploy.sh       # Run your deploy script
+    startCommand: gunicorn mysite.wsgi:application  # Replace 'mysite' with your Django project folder
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: mysite.settings         # Replace 'mysite.settings' with your actual settings module
+      - key: RUN_MIGRATIONS
+        value: "true"                  # Set to "true" if you want migrations to run automatically
